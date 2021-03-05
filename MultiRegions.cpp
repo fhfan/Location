@@ -417,27 +417,42 @@ void MultiRegions::OnBnClickedButtonLoadimageXld()
 	// TODO:  在此添加控件通知处理程序代码
 	HTuple hv_Files, hv_DxfStatus, hv_ReadPath;
 	CString str, target;
-	BROWSEINFO bi;
-	char name[MAX_PATH];
-	ZeroMemory(&bi, sizeof(BROWSEINFO));
-	LPITEMIDLIST rootLoation = ParsePidlFromPath("C:\\Users\\AI-009\\Desktop");
-	bi.hwndOwner = GetSafeHwnd();
-	bi.pszDisplayName = name;
-	//bi.lpszTitle = "S浏览文件夹";
-	bi.ulFlags = BIF_RETURNONLYFSDIRS;
 
-	ZeroMemory(&bi, sizeof(bi));
-	bi.pidlRoot = rootLoation;
-	bi.lpszTitle = _T(""); // 可以不指定
-	LPITEMIDLIST targetLocation = SHBrowseForFolder(&bi);
-	if (targetLocation != NULL) {
-		SHGetPathFromIDList(targetLocation, (LPSTR)(LPCSTR)target);
-	}
-	else
+	//BROWSEINFO bi;
+	//char name[MAX_PATH];
+	//ZeroMemory(&bi, sizeof(BROWSEINFO));
+	//LPITEMIDLIST rootLoation = ParsePidlFromPath(".\\location");
+	//bi.hwndOwner = GetSafeHwnd();
+	//bi.pszDisplayName = name;
+	////bi.lpszTitle = "S浏览文件夹";
+	//bi.ulFlags = BIF_RETURNONLYFSDIRS;
+
+	//ZeroMemory(&bi, sizeof(bi));
+	//bi.pidlRoot = rootLoation;
+	//bi.lpszTitle = _T(""); // 可以不指定
+	//LPITEMIDLIST targetLocation = SHBrowseForFolder(&bi);
+	//if (targetLocation != NULL) {
+	//	SHGetPathFromIDList(targetLocation, (LPSTR)(LPCSTR)target);
+	//}
+	//else
+	//	return;
+
+	TCHAR szBuffer[MAX_PATH] = { 0 };
+	BROWSEINFO bi;
+	ZeroMemory(&bi, sizeof(BROWSEINFO));
+	bi.hwndOwner = NULL;
+	bi.pszDisplayName = szBuffer;
+	bi.lpszTitle = _T("从下面选择文件或文件夹:");
+	bi.ulFlags = BIF_BROWSEINCLUDEFILES;
+	LPITEMIDLIST idl = SHBrowseForFolder(&bi);
+	if (NULL == idl)
+	{
 		return;
-	hv_ReadPath = HTuple(target);
-	ListFiles(hv_ReadPath, "files", &hv_Files);
-	ReadImage(&hoImage, HTuple(hv_Files[0]));
+	}
+	SHGetPathFromIDList(idl, szBuffer);
+	//hv_ReadPath = HTuple(target);
+	//ListFiles(hv_ReadPath, "files", &hv_Files);
+	ReadImage(&hoImage, HTuple(szBuffer));
 	//GetImagePointer1(hoImage, NULL, NULL, &m_ImageWidth, &m_ImageHeight);
 	GetImageSize(hoImage, &m_hWidth, &m_hHeight);
 	SetPart(hvWindowID, 0, 0, m_hHeight - 1, m_hWidth - 1);
@@ -488,7 +503,7 @@ void MultiRegions::OnBnClickedButtonLoadimageXld()
 	m_dDispImagePartCol1 = Col1;
 
 	ShowImage();*/
-	ReadContourXldDxf(&ho_Contours, "C:\\Users\\AI-009\\Desktop\\新建文件夹\\工程图文档5.dxf", HTuple(),
+	ReadContourXldDxf(&ho_Contours, ".\\location\\工程图文档5.dxf", HTuple(),
 		HTuple(), &hv_DxfStatus);
 	//dxf_scale(&ho_Contours, pixel_size, &ho_ContoursScaled, &x_base, &y_base);
 
@@ -1569,27 +1584,40 @@ void MultiRegions::OnBnClickedButton1()
 
 	HTuple hv_Files, hv_DxfStatus, hv_ReadPath;
 	CString str, target;
-	BROWSEINFO bi;
-	char name[MAX_PATH];
-	ZeroMemory(&bi, sizeof(BROWSEINFO));
-	LPITEMIDLIST rootLoation = ParsePidlFromPath("C:\\Users\\AI-009\\Desktop");
-	bi.hwndOwner = GetSafeHwnd();
-	bi.pszDisplayName = name;
-	//bi.lpszTitle = "S浏览文件夹";
-	bi.ulFlags = BIF_RETURNONLYFSDIRS;
+	//BROWSEINFO bi;
+	//char name[MAX_PATH];
+	//ZeroMemory(&bi, sizeof(BROWSEINFO));
+	//LPITEMIDLIST rootLoation = ParsePidlFromPath(".\\location");
+	//bi.hwndOwner = GetSafeHwnd();
+	//bi.pszDisplayName = name;
+	////bi.lpszTitle = "S浏览文件夹";
+	//bi.ulFlags = BIF_RETURNONLYFSDIRS;
 
-	ZeroMemory(&bi, sizeof(bi));
-	bi.pidlRoot = rootLoation;
-	bi.lpszTitle = _T(""); // 可以不指定
-	LPITEMIDLIST targetLocation = SHBrowseForFolder(&bi);
-	if (targetLocation != NULL) {
-		SHGetPathFromIDList(targetLocation, (LPSTR)(LPCSTR)target);
-	}
-	else
+	//ZeroMemory(&bi, sizeof(bi));
+	//bi.pidlRoot = rootLoation;
+	//bi.lpszTitle = _T(""); // 可以不指定
+	//LPITEMIDLIST targetLocation = SHBrowseForFolder(&bi);
+	//if (targetLocation != NULL) {
+	//	SHGetPathFromIDList(targetLocation, (LPSTR)(LPCSTR)target);
+	//}
+	//else
+	//	return;
+	TCHAR szBuffer[MAX_PATH] = { 0 };
+	BROWSEINFO bi;
+	ZeroMemory(&bi, sizeof(BROWSEINFO));
+	bi.hwndOwner = NULL;
+	bi.pszDisplayName = szBuffer;
+	bi.lpszTitle = _T("从下面选择文件或文件夹:");
+	bi.ulFlags = BIF_BROWSEINCLUDEFILES;
+	LPITEMIDLIST idl = SHBrowseForFolder(&bi);
+	if (NULL == idl)
+	{
 		return;
-	hv_ReadPath = HTuple(target);
-	ListFiles(hv_ReadPath, "files", &hv_Files);
-	ReadContourXldDxf(&ho_Contours, HTuple(hv_Files[1]), HTuple(),
+	}
+	SHGetPathFromIDList(idl, szBuffer);
+	//hv_ReadPath = HTuple(target);
+	//ListFiles(hv_ReadPath, "files", &hv_Files);
+	ReadContourXldDxf(&ho_Contours, HTuple(szBuffer), HTuple(),
 			HTuple(), &hv_DxfStatus);
 	HDevWindowStack::Push(hvWindowID);
 	if (HDevWindowStack::IsOpen())
@@ -2271,216 +2299,216 @@ void dev_update_on()
 //}
 
 
-void get_user_selected_ROIs(HObject ho_Image, HObject ho_GenRegions, HObject ho_GenContours,
-	HTuple hv_WindowID, HTuple *hv_contourGroupIdx)
-{
-
-	// Local iconic variables
-	HObject  ho_cnt, ho_selectedContours, ho_contourSelected;
-
-	// Local control variables
-	HTuple  hv_Error;
-	HTuple  hv_WindowIDOut, hv_RegionNumber, hv_mButton;
-	HTuple  hv_ButtonPrev, hv_current, hv_finishFlag, hv_i;
-	HTuple  hv_Area, hv_Row, hv_Column, hv_po, hv_isInside;
-	HTuple  hv_keyInput, hv_controlKey, hv_cntN, hv_numberExist;
-	HTuple  hv_index, hv_deleteIndex;
-
-	hv_WindowIDOut = hv_WindowID;
-	CountObj(ho_GenRegions, &hv_RegionNumber);
-	hv_WindowIDOut = hv_WindowIDOut;
-	hv_mButton = 0;
-	hv_ButtonPrev = 0;
-	(*hv_contourGroupIdx) = HTuple();
-	if (HDevWindowStack::IsOpen())
-		ClearWindow(HDevWindowStack::GetActive());
-	hv_current = 0;
-	hv_finishFlag = 0;
-	while (0 != (0 != 1))
-	{
-		dev_update_on();
-		HDevWindowStack::SetActive(hv_WindowIDOut);
-		if (HDevWindowStack::IsOpen())
-			DispObj(ho_Image, HDevWindowStack::GetActive());
-		if (0 != hv_finishFlag)
-		{
-			if (HDevWindowStack::IsOpen())
-				SetColor(HDevWindowStack::GetActive(), "black");
-			break;
-		}
-		if (HDevWindowStack::IsOpen())
-			SetLineWidth(HDevWindowStack::GetActive(), 2);
-		{
-			HTuple end_val18 = hv_RegionNumber;
-			HTuple step_val18 = 1;
-			for (hv_i = 1; hv_i.Continue(end_val18, step_val18); hv_i += step_val18)
-			{
-				SelectObj(ho_GenContours, &ho_cnt, hv_i);
-				//**dev_set_color(colors[i%7])
-				if (0 != (hv_i == hv_current))
-				{
-					if (HDevWindowStack::IsOpen())
-						SetColor(HDevWindowStack::GetActive(), "red");
-					if (HDevWindowStack::IsOpen())
-						DispObj(ho_cnt, HDevWindowStack::GetActive());
-					AreaCenterXld(ho_cnt, &hv_Area, &hv_Row, &hv_Column, &hv_po);
-					SetTposition(hv_WindowIDOut, hv_Row, hv_Column);
-					WriteString(hv_WindowIDOut, "ROI-" + hv_i);
-				}
-				else
-				{
-					if (HDevWindowStack::IsOpen())
-						SetColor(HDevWindowStack::GetActive(), "gray");
-					if (HDevWindowStack::IsOpen())
-						DispObj(ho_cnt, HDevWindowStack::GetActive());
-				}
-			}
-		}
-		if (0 != ((*hv_contourGroupIdx) != HTuple()))
-		{
-			SelectObj(ho_GenContours, &ho_selectedContours, (*hv_contourGroupIdx));
-			if (HDevWindowStack::IsOpen())
-				SetColor(HDevWindowStack::GetActive(), "green");
-			if (HDevWindowStack::IsOpen())
-				SetLineWidth(HDevWindowStack::GetActive(), 3);
-			if (HDevWindowStack::IsOpen())
-				DispObj(ho_selectedContours, HDevWindowStack::GetActive());
-			if (HDevWindowStack::IsOpen())
-				SetLineWidth(HDevWindowStack::GetActive(), 1);
-			if (HDevWindowStack::IsOpen())
-				SetColor(HDevWindowStack::GetActive(), "black");
-		}
-		if (HDevWindowStack::IsOpen())
-			SetLineWidth(HDevWindowStack::GetActive(), 1);
-		if (HDevWindowStack::IsOpen())
-			SetColor(HDevWindowStack::GetActive(), "black");
-		dev_update_off();
-		//*********************************************************************
-		//*********************************************************************
-		// Error variable 'hv_Error' activated
-		hv_Error = 2;
-		// dev_set_check ("~give_error")
-		//*********************************************************************
-		//*********************************************************************
-		//*** get_mbutton(WindowID, Row, Column, mButton)
-		try
-		{
-			hv_Error = 2;
-			GetMposition(hv_WindowIDOut, &hv_Row, &hv_Column, &hv_mButton);
-		}
-		catch (HalconCpp::HException e)
-		{
-			hv_Error = (int)e.ErrorCode();
-			if (hv_Error < 0)
-				throw e;
-		}
-		//*********************************************************************
-		//*********************************************************************
-		// Error variable 'hv_Error' deactivated
-		// dev_set_check ("give_error")
-		if (0 != (hv_Error == 2))
-		{
-		}
-		//*** TODO：一次只添加一个
-		hv_current = 0;
-		{
-			HTuple end_val59 = hv_RegionNumber;
-			HTuple step_val59 = 1;
-			for (hv_i = 1; hv_i.Continue(end_val59, step_val59); hv_i += step_val59)
-			{
-				hv_isInside = 0;
-				SelectObj(ho_GenContours, &ho_contourSelected, hv_i);
-				TestXldPoint(ho_contourSelected, hv_Row, hv_Column, &hv_isInside);
-				if (0 != (hv_isInside == 1))
-				{
-					if (0 != (hv_i>hv_current))
-					{
-						hv_current = hv_i;
-					}
-				}
-			}
-		}
-		if (0 != (hv_mButton != 0))
-		{
-			if (0 != (hv_mButton == 1))
-			{
-				if (0 != (hv_current != 0))
-				{
-					ReadChar(hv_WindowIDOut, &hv_keyInput, &hv_controlKey);
-					if (0 != (hv_keyInput == HTuple("3")))
-					{
-						//***  cancel
-						(*hv_contourGroupIdx) = HTuple();
-					}
-					if (0 != (hv_keyInput == HTuple("1")))
-					{
-						//*** add
-						TupleLength((*hv_contourGroupIdx), &hv_cntN);
-						if (0 != (hv_cntN == 0))
-						{
-							(*hv_contourGroupIdx) = (*hv_contourGroupIdx).TupleConcat(hv_current);
-						}
-						else
-						{
-							hv_numberExist = 0;
-							{
-								HTuple end_val84 = hv_cntN;
-								HTuple step_val84 = 1;
-								for (hv_index = 1; hv_index.Continue(end_val84, step_val84); hv_index += step_val84)
-								{
-									if (0 != (HTuple((*hv_contourGroupIdx)[hv_index - 1]) == hv_current))
-									{
-										hv_numberExist = 1;
-									}
-								}
-							}
-							if (0 != (hv_numberExist == 0))
-							{
-								(*hv_contourGroupIdx) = (*hv_contourGroupIdx).TupleConcat(hv_current);
-							}
-						}
-					}
-					if (0 != (hv_keyInput == HTuple("2")))
-					{
-						//*** delete
-						TupleLength((*hv_contourGroupIdx), &hv_cntN);
-						if (0 != (hv_cntN == 0))
-						{
-							//* TODO： output warning： 只能删除当前已经选择的区域
-						}
-						else
-						{
-							hv_numberExist = 0;
-							{
-								HTuple end_val101 = hv_cntN;
-								HTuple step_val101 = 1;
-								for (hv_index = 1; hv_index.Continue(end_val101, step_val101); hv_index += step_val101)
-								{
-									if (0 != (HTuple((*hv_contourGroupIdx)[hv_index - 1]) == hv_current))
-									{
-										hv_numberExist = 1;
-										hv_deleteIndex = hv_index - 1;
-									}
-								}
-							}
-							if (0 != (hv_numberExist == 1))
-							{
-								TupleRemove((*hv_contourGroupIdx), hv_deleteIndex, &(*hv_contourGroupIdx));
-							}
-						}
-					}
-					if (0 != (hv_keyInput == HTuple("5")))
-					{
-						//*** finish
-						hv_finishFlag = 1;
-					}
-				}
-			}
-		}
-		dev_update_on();
-	}
-	return;
-}
+//void get_user_selected_ROIs(HObject ho_Image, HObject ho_GenRegions, HObject ho_GenContours,
+//	HTuple hv_WindowID, HTuple *hv_contourGroupIdx)
+//{
+//
+//	// Local iconic variables
+//	HObject  ho_cnt, ho_selectedContours, ho_contourSelected;
+//
+//	// Local control variables
+//	HTuple  hv_Error;
+//	HTuple  hv_WindowIDOut, hv_RegionNumber, hv_mButton;
+//	HTuple  hv_ButtonPrev, hv_current, hv_finishFlag, hv_i;
+//	HTuple  hv_Area, hv_Row, hv_Column, hv_po, hv_isInside;
+//	HTuple  hv_keyInput, hv_controlKey, hv_cntN, hv_numberExist;
+//	HTuple  hv_index, hv_deleteIndex;
+//
+//	hv_WindowIDOut = hv_WindowID;
+//	CountObj(ho_GenRegions, &hv_RegionNumber);
+//	hv_WindowIDOut = hv_WindowIDOut;
+//	hv_mButton = 0;
+//	hv_ButtonPrev = 0;
+//	(*hv_contourGroupIdx) = HTuple();
+//	if (HDevWindowStack::IsOpen())
+//		ClearWindow(HDevWindowStack::GetActive());
+//	hv_current = 0;
+//	hv_finishFlag = 0;
+//	while (0 != (0 != 1))
+//	{
+//		dev_update_on();
+//		HDevWindowStack::SetActive(hv_WindowIDOut);
+//		if (HDevWindowStack::IsOpen())
+//			DispObj(ho_Image, HDevWindowStack::GetActive());
+//		if (0 != hv_finishFlag)
+//		{
+//			if (HDevWindowStack::IsOpen())
+//				SetColor(HDevWindowStack::GetActive(), "black");
+//			break;
+//		}
+//		if (HDevWindowStack::IsOpen())
+//			SetLineWidth(HDevWindowStack::GetActive(), 2);
+//		{
+//			HTuple end_val18 = hv_RegionNumber;
+//			HTuple step_val18 = 1;
+//			for (hv_i = 1; hv_i.Continue(end_val18, step_val18); hv_i += step_val18)
+//			{
+//				SelectObj(ho_GenContours, &ho_cnt, hv_i);
+//				//**dev_set_color(colors[i%7])
+//				if (0 != (hv_i == hv_current))
+//				{
+//					if (HDevWindowStack::IsOpen())
+//						SetColor(HDevWindowStack::GetActive(), "red");
+//					if (HDevWindowStack::IsOpen())
+//						DispObj(ho_cnt, HDevWindowStack::GetActive());
+//					AreaCenterXld(ho_cnt, &hv_Area, &hv_Row, &hv_Column, &hv_po);
+//					SetTposition(hv_WindowIDOut, hv_Row, hv_Column);
+//					WriteString(hv_WindowIDOut, "ROI-" + hv_i);
+//				}
+//				else
+//				{
+//					if (HDevWindowStack::IsOpen())
+//						SetColor(HDevWindowStack::GetActive(), "gray");
+//					if (HDevWindowStack::IsOpen())
+//						DispObj(ho_cnt, HDevWindowStack::GetActive());
+//				}
+//			}
+//		}
+//		if (0 != ((*hv_contourGroupIdx) != HTuple()))
+//		{
+//			SelectObj(ho_GenContours, &ho_selectedContours, (*hv_contourGroupIdx));
+//			if (HDevWindowStack::IsOpen())
+//				SetColor(HDevWindowStack::GetActive(), "green");
+//			if (HDevWindowStack::IsOpen())
+//				SetLineWidth(HDevWindowStack::GetActive(), 3);
+//			if (HDevWindowStack::IsOpen())
+//				DispObj(ho_selectedContours, HDevWindowStack::GetActive());
+//			if (HDevWindowStack::IsOpen())
+//				SetLineWidth(HDevWindowStack::GetActive(), 1);
+//			if (HDevWindowStack::IsOpen())
+//				SetColor(HDevWindowStack::GetActive(), "black");
+//		}
+//		if (HDevWindowStack::IsOpen())
+//			SetLineWidth(HDevWindowStack::GetActive(), 1);
+//		if (HDevWindowStack::IsOpen())
+//			SetColor(HDevWindowStack::GetActive(), "black");
+//		dev_update_off();
+//		//*********************************************************************
+//		//*********************************************************************
+//		// Error variable 'hv_Error' activated
+//		hv_Error = 2;
+//		// dev_set_check ("~give_error")
+//		//*********************************************************************
+//		//*********************************************************************
+//		//*** get_mbutton(WindowID, Row, Column, mButton)
+//		try
+//		{
+//			hv_Error = 2;
+//			GetMposition(hv_WindowIDOut, &hv_Row, &hv_Column, &hv_mButton);
+//		}
+//		catch (HalconCpp::HException e)
+//		{
+//			hv_Error = (int)e.ErrorCode();
+//			if (hv_Error < 0)
+//				throw e;
+//		}
+//		//*********************************************************************
+//		//*********************************************************************
+//		// Error variable 'hv_Error' deactivated
+//		// dev_set_check ("give_error")
+//		if (0 != (hv_Error == 2))
+//		{
+//		}
+//		//*** TODO：一次只添加一个
+//		hv_current = 0;
+//		{
+//			HTuple end_val59 = hv_RegionNumber;
+//			HTuple step_val59 = 1;
+//			for (hv_i = 1; hv_i.Continue(end_val59, step_val59); hv_i += step_val59)
+//			{
+//				hv_isInside = 0;
+//				SelectObj(ho_GenContours, &ho_contourSelected, hv_i);
+//				TestXldPoint(ho_contourSelected, hv_Row, hv_Column, &hv_isInside);
+//				if (0 != (hv_isInside == 1))
+//				{
+//					if (0 != (hv_i>hv_current))
+//					{
+//						hv_current = hv_i;
+//					}
+//				}
+//			}
+//		}
+//		if (0 != (hv_mButton != 0))
+//		{
+//			if (0 != (hv_mButton == 1))
+//			{
+//				if (0 != (hv_current != 0))
+//				{
+//					ReadChar(hv_WindowIDOut, &hv_keyInput, &hv_controlKey);
+//					if (0 != (hv_keyInput == HTuple("3")))
+//					{
+//						//***  cancel
+//						(*hv_contourGroupIdx) = HTuple();
+//					}
+//					if (0 != (hv_keyInput == HTuple("1")))
+//					{
+//						//*** add
+//						TupleLength((*hv_contourGroupIdx), &hv_cntN);
+//						if (0 != (hv_cntN == 0))
+//						{
+//							(*hv_contourGroupIdx) = (*hv_contourGroupIdx).TupleConcat(hv_current);
+//						}
+//						else
+//						{
+//							hv_numberExist = 0;
+//							{
+//								HTuple end_val84 = hv_cntN;
+//								HTuple step_val84 = 1;
+//								for (hv_index = 1; hv_index.Continue(end_val84, step_val84); hv_index += step_val84)
+//								{
+//									if (0 != (HTuple((*hv_contourGroupIdx)[hv_index - 1]) == hv_current))
+//									{
+//										hv_numberExist = 1;
+//									}
+//								}
+//							}
+//							if (0 != (hv_numberExist == 0))
+//							{
+//								(*hv_contourGroupIdx) = (*hv_contourGroupIdx).TupleConcat(hv_current);
+//							}
+//						}
+//					}
+//					if (0 != (hv_keyInput == HTuple("2")))
+//					{
+//						//*** delete
+//						TupleLength((*hv_contourGroupIdx), &hv_cntN);
+//						if (0 != (hv_cntN == 0))
+//						{
+//							//* TODO： output warning： 只能删除当前已经选择的区域
+//						}
+//						else
+//						{
+//							hv_numberExist = 0;
+//							{
+//								HTuple end_val101 = hv_cntN;
+//								HTuple step_val101 = 1;
+//								for (hv_index = 1; hv_index.Continue(end_val101, step_val101); hv_index += step_val101)
+//								{
+//									if (0 != (HTuple((*hv_contourGroupIdx)[hv_index - 1]) == hv_current))
+//									{
+//										hv_numberExist = 1;
+//										hv_deleteIndex = hv_index - 1;
+//									}
+//								}
+//							}
+//							if (0 != (hv_numberExist == 1))
+//							{
+//								TupleRemove((*hv_contourGroupIdx), hv_deleteIndex, &(*hv_contourGroupIdx));
+//							}
+//						}
+//					}
+//					if (0 != (hv_keyInput == HTuple("5")))
+//					{
+//						//*** finish
+//						hv_finishFlag = 1;
+//					}
+//				}
+//			}
+//		}
+//		dev_update_on();
+//	}
+//	return;
+//}
 
 void gen_regions_by_contours_bingary_image(HObject ho_ImageBG, HObject ho_Contours,
 	HObject *ho_GenRegions, HObject *ho_GenContours, HTuple hv_Width, HTuple hv_Height,
@@ -2525,21 +2553,514 @@ void gen_regions_by_contours_bingary_image(HObject ho_ImageBG, HObject ho_Contou
 }
 
 
+//void get_user_selected_ROIs(HObject ho_Image, HObject ho_GenRegions, HObject ho_GenContours,
+//	HTuple hv_WindowID, HTuple *hv_regionIdDefinedByUser, HTuple *hv_selectedRegionIdList,
+//	HTuple *hv_mousePositionRegionID)
+//{
+//
+//	// Local iconic variables
+//	HObject  ho_cnt, ho_selectedContours, ho_contourSelected;
+//
+//	// Local control variables
+//	HTuple  hv_Error;
+//	HTuple  hv_WindowIDOut, hv_RegionNumber, hv_index;
+//	HTuple  hv_ImgWidth, hv_ImgHeight, hv_COLORS, hv_COLORS_NUMBER;
+//	HTuple  hv_mButton, hv_ButtonPrev, hv_current, hv_finishFlag;
+//	HTuple  hv_i, hv_Area, hv_Row, hv_Column, hv_po, hv_mousePositionRegionId;
+//	HTuple  hv_userDefindRegionId, hv_isInside, hv_repeatFlag;
+//	HTuple  hv_countNumber;
+//
+//	hv_WindowIDOut = hv_WindowID;
+//	CountObj(ho_GenRegions, &hv_RegionNumber);
+//	(*hv_regionIdDefinedByUser) = HTuple();
+//	{
+//		HTuple end_val3 = hv_RegionNumber - 1;
+//		HTuple step_val3 = 1;
+//		for (hv_index = 0; hv_index.Continue(end_val3, step_val3); hv_index += step_val3)
+//		{
+//			(*hv_regionIdDefinedByUser) = (*hv_regionIdDefinedByUser).TupleConcat(-1);
+//		}
+//	}
+//	GetImageSize(ho_Image, &hv_ImgWidth, &hv_ImgHeight);
+//	hv_WindowIDOut = hv_WindowIDOut;
+//	hv_COLORS.Clear();
+//	hv_COLORS[0] = "#FF3232";
+//	hv_COLORS[1] = "#FF9F00";
+//	hv_COLORS[2] = "#59E3FF";
+//	hv_COLORS[3] = "#7D32FF";
+//	hv_COLORS[4] = "#0C88FC";
+//	hv_COLORS[5] = "#081DA5";
+//	hv_COLORS[6] = "#CCA20A";
+//	hv_COLORS[7] = "#0A24CC";
+//	hv_COLORS[8] = "#FC0C0C";
+//	hv_COLORS[9] = "#CC00FF";
+//	TupleLength(hv_COLORS, &hv_COLORS_NUMBER);
+//	hv_mButton = 0;
+//	hv_ButtonPrev = 0;
+//	(*hv_selectedRegionIdList) = HTuple();
+//	if (HDevWindowStack::IsOpen())
+//		ClearWindow(HDevWindowStack::GetActive());
+//	hv_current = 0;
+//	hv_finishFlag = 0;
+//
+//	while (0 != (0 != 1))
+//	{
+//		if (0 != hv_finishFlag)
+//		{
+//			if (HDevWindowStack::IsOpen())
+//				SetColor(HDevWindowStack::GetActive(), "black");
+//			break;
+//		}
+//		hv_mousePositionRegionId = -1;
+//		if (0 != (hv_current != 0))
+//		{
+//			hv_mousePositionRegionId = hv_current;
+//		}
+//		dev_update_on();
+//		HDevWindowStack::SetActive(hv_WindowIDOut);
+//		if (HDevWindowStack::IsOpen())
+//			DispObj(ho_Image, HDevWindowStack::GetActive());
+//
+//		if (HDevWindowStack::IsOpen())
+//			SetLineWidth(HDevWindowStack::GetActive(), 2);
+//		{
+//			HTuple end_val64 = hv_RegionNumber;
+//			HTuple step_val64 = 1;
+//			for (hv_i = 1; hv_i.Continue(end_val64, step_val64); hv_i += step_val64)
+//			{
+//				SelectObj(ho_GenContours, &ho_cnt, hv_i);
+//				if (0 != (hv_i == hv_current))
+//				{
+//					if (HDevWindowStack::IsOpen())
+//						SetLineWidth(HDevWindowStack::GetActive(), 4);
+//					if (HDevWindowStack::IsOpen())
+//						SetColor(HDevWindowStack::GetActive(), "red");
+//					if (HDevWindowStack::IsOpen())
+//						DispObj(ho_cnt, HDevWindowStack::GetActive());
+//					AreaCenterXld(ho_cnt, &hv_Area, &hv_Row, &hv_Column, &hv_po);
+//					SetTposition(hv_WindowIDOut, hv_Row, hv_Column);
+//					hv_userDefindRegionId = ((const HTuple&)(*hv_regionIdDefinedByUser))[hv_i - 1];
+//					if (0 != (hv_userDefindRegionId != -1))
+//					{
+//						WriteString(hv_WindowIDOut, "ROI-" + hv_userDefindRegionId);
+//					}
+//					else
+//					{
+//						WriteString(hv_WindowIDOut, "ROI-" + hv_i);
+//					}
+//					if (HDevWindowStack::IsOpen())
+//						SetLineWidth(HDevWindowStack::GetActive(), 2);
+//				}
+//				else
+//				{
+//					if (HDevWindowStack::IsOpen())
+//						SetLineWidth(HDevWindowStack::GetActive(), 3);
+//					if (HDevWindowStack::IsOpen())
+//						SetColor(HDevWindowStack::GetActive(), HTuple(hv_COLORS[hv_i%hv_COLORS_NUMBER]));
+//					AreaCenterXld(ho_cnt, &hv_Area, &hv_Row, &hv_Column, &hv_po);
+//					SetTposition(hv_WindowIDOut, hv_Row, hv_Column);
+//					WriteString(hv_WindowIDOut, "ROI-" + hv_i);
+//					if (HDevWindowStack::IsOpen())
+//						DispObj(ho_cnt, HDevWindowStack::GetActive());
+//				}
+//			}
+//		}
+//		if (0 != ((*hv_selectedRegionIdList) != HTuple()))
+//		{
+//			SelectObj(ho_GenContours, &ho_selectedContours, (*hv_selectedRegionIdList));
+//			if (HDevWindowStack::IsOpen())
+//				SetColor(HDevWindowStack::GetActive(), "green");
+//			if (HDevWindowStack::IsOpen())
+//				SetLineWidth(HDevWindowStack::GetActive(), 4);
+//			if (HDevWindowStack::IsOpen())
+//				DispObj(ho_selectedContours, HDevWindowStack::GetActive());
+//			if (HDevWindowStack::IsOpen())
+//				SetLineWidth(HDevWindowStack::GetActive(), 1);
+//			if (HDevWindowStack::IsOpen())
+//				SetColor(HDevWindowStack::GetActive(), "black");
+//		}
+//		if (HDevWindowStack::IsOpen())
+//			SetLineWidth(HDevWindowStack::GetActive(), 1);
+//		if (HDevWindowStack::IsOpen())
+//			SetColor(HDevWindowStack::GetActive(), "black");
+//		dev_update_off();
+//
+//		//*********************************************************************
+//		// Error variable 'hv_Error' activated
+//		hv_Error = 2;
+//
+//		try
+//		{
+//			hv_Error = 2;
+//			GetMbutton(hv_WindowID, &hv_Row, &hv_Column, &hv_mButton);
+//		}
+//		catch (HalconCpp::HException e)
+//		{
+//			hv_Error = (int)e.ErrorCode();
+//			if (hv_Error < 0)
+//				throw e;
+//		}
+//
+//		// Error variable 'hv_Error' deactivated
+//		// dev_set_check ("give_error")
+//		if (0 != (hv_Error == 2))
+//		{
+//		}
+//		//*** TODO：一次只添加一个
+//		hv_current = 0;
+//		{
+//			HTuple end_val116 = hv_RegionNumber;
+//			HTuple step_val116 = 1;
+//			for (hv_i = 1; hv_i.Continue(end_val116, step_val116); hv_i += step_val116)
+//			{
+//				hv_isInside = 0;
+//				SelectObj(ho_GenContours, &ho_contourSelected, hv_i);
+//				TestXldPoint(ho_contourSelected, hv_Row, hv_Column, &hv_isInside);
+//				if (0 != (hv_isInside == 1))
+//				{
+//					if (0 != (hv_i>hv_current))
+//					{
+//						hv_current = hv_i;
+//					}
+//				}
+//			}
+//		}
+//		if (0 != (hv_mButton != 0))
+//		{
+//			if (0 != (HTuple(hv_mButton == 1).TupleAnd(hv_current>0)))
+//			{
+//				hv_repeatFlag = 0;
+//				TupleLength((*hv_selectedRegionIdList), &hv_countNumber);
+//				if (0 != (hv_countNumber == 0))
+//				{
+//					(*hv_selectedRegionIdList) = hv_current;
+//				}
+//				else
+//				{
+//					{
+//						HTuple end_val133 = hv_countNumber - 1;
+//						HTuple step_val133 = 1;
+//						for (hv_index = 0; hv_index.Continue(end_val133, step_val133); hv_index += step_val133)
+//						{
+//							if (0 != (HTuple((*hv_selectedRegionIdList)[hv_index]) == hv_current))
+//							{
+//								hv_repeatFlag = 1;
+//							}
+//						}
+//					}
+//					if (0 != (hv_repeatFlag == 0))
+//					{
+//						(*hv_selectedRegionIdList) = (*hv_selectedRegionIdList).TupleConcat(hv_current);
+//					}
+//				}
+//				if (0 != (hv_mButton == 4))
+//				{
+//					hv_finishFlag = 1;
+//				}
+//			}
+//		}
+//		//** dump_window_image(InitWindowImage,WindowIDOut)
+//		dev_update_on();
+//	}
+//	if (HDevWindowStack::IsOpen())
+//		CloseWindow(HDevWindowStack::Pop());
+//	return;
+//}
+
+void get_user_selected_ROIs(HObject ho_Image, HObject ho_GenRegions, HObject ho_GenContours,
+	HTuple hv_WindowID, HTuple *hv_regionIdDefinedByUser, HTuple *hv_selectedRegionIdList,
+	HTuple *hv_mousePositionRegionID)
+{
+
+	// Local iconic variables
+	HObject  ho_cnt, ho_selectedContours, ho_contourSelected;
+
+	// Local control variables
+	HTuple  hv_Error;
+	HTuple  hv_WindowIDOut, hv_RegionNumber, hv_index;
+	HTuple  hv_ImgWidth, hv_ImgHeight, hv_COLORS, hv_COLORS_NUMBER;
+	HTuple  hv_mButton, hv_ButtonPrev, hv_current, hv_finishFlag;
+	HTuple  hv_i, hv_Area, hv_Row, hv_Column, hv_po, hv_mousePositionRegionId;
+	HTuple  hv_userDefindRegionId, hv_isInside, hv_repeatFlag;
+	HTuple  hv_countNumber, hv_cntN;
+
+	hv_WindowIDOut = hv_WindowID;
+	CountObj(ho_GenRegions, &hv_RegionNumber);
+	(*hv_regionIdDefinedByUser) = HTuple();
+	{
+		HTuple end_val3 = hv_RegionNumber - 1;
+		HTuple step_val3 = 1;
+		for (hv_index = 0; hv_index.Continue(end_val3, step_val3); hv_index += step_val3)
+		{
+			(*hv_regionIdDefinedByUser) = (*hv_regionIdDefinedByUser).TupleConcat(-1);
+		}
+	}
+	GetImageSize(ho_Image, &hv_ImgWidth, &hv_ImgHeight);
+	hv_WindowIDOut = hv_WindowIDOut;
+	hv_COLORS.Clear();
+	hv_COLORS[0] = "#FF3232";
+	hv_COLORS[1] = "#FF9F00";
+	hv_COLORS[2] = "#59E3FF";
+	hv_COLORS[3] = "#7D32FF";
+	hv_COLORS[4] = "#0C88FC";
+	hv_COLORS[5] = "#081DA5";
+	hv_COLORS[6] = "#CCA20A";
+	hv_COLORS[7] = "#0A24CC";
+	hv_COLORS[8] = "#FC0C0C";
+	hv_COLORS[9] = "#CC00FF";
+	TupleLength(hv_COLORS, &hv_COLORS_NUMBER);
+	hv_mButton = 0;
+	hv_ButtonPrev = 0;
+	(*hv_selectedRegionIdList) = HTuple();
+	if (HDevWindowStack::IsOpen())
+		ClearWindow(HDevWindowStack::GetActive());
+	hv_current = 0;
+	hv_finishFlag = 0;
+	//dev_set_window (WindowIDOut)
+	//disp_image (Image, WindowIDOut)
+	//dev_display (Image)
+	//dev_set_line_width (2)
+	//for i := 1 to RegionNumber by 1
+	//select_obj (GenContours, cnt, i)
+	//dev_set_color (COLORS[i%COLORS_NUMBER])
+	//if (i == current and DebugMode)
+	//dev_set_color ('red')
+	//dev_display (cnt)
+	//area_center_xld (cnt, Area, Row, Column, po)
+	//set_tposition (WindowIDOut, Row, Column)
+	//write_string (WindowIDOut, 'ROI-'+i)
+	//endif
+	//disp_xld (cnt, WindowIDOut)
+	//dev_display (cnt)
+	//endfor
+	//dump_window_image (InitWindowImage, WindowIDOut)
+
+	while (0 != (0 != 1))
+	{
+		if (0 != hv_finishFlag)
+		{
+			if (HDevWindowStack::IsOpen())
+				SetColor(HDevWindowStack::GetActive(), "black");
+			break;
+		}
+		hv_mousePositionRegionId = -1;
+		if (0 != (hv_current != 0))
+		{
+			hv_mousePositionRegionId = hv_current;
+		}
+		dev_update_on();
+		HDevWindowStack::SetActive(hv_WindowIDOut);
+		if (HDevWindowStack::IsOpen())
+			DispObj(ho_Image, HDevWindowStack::GetActive());
+		//dev_set_line_width (2)
+		//for i := 1 to RegionNumber by 1
+		//select_obj (GenContours, cnt, i)
+		//dev_set_color (COLORS[i%COLORS_NUMBER])
+		//if (i == current and DebugMode)
+		//dev_set_color ('red')
+		//dev_display (cnt)
+		//area_center_xld (cnt, Area, Row, Column, po)
+		//set_tposition (WindowIDOut, Row, Column)
+		//write_string (WindowIDOut, 'ROI-'+i)
+		//endif
+		//disp_xld (cnt, WindowIDOut)
+		//dev_display (cnt)
+		//endfor
+		//stop ()
+
+		if (HDevWindowStack::IsOpen())
+			SetLineWidth(HDevWindowStack::GetActive(), 2);
+		{
+			HTuple end_val64 = hv_RegionNumber;
+			HTuple step_val64 = 1;
+			for (hv_i = 1; hv_i.Continue(end_val64, step_val64); hv_i += step_val64)
+			{
+				SelectObj(ho_GenContours, &ho_cnt, hv_i);
+				if (0 != (hv_i == hv_current))
+				{
+					if (HDevWindowStack::IsOpen())
+						SetLineWidth(HDevWindowStack::GetActive(), 4);
+					if (HDevWindowStack::IsOpen())
+						SetColor(HDevWindowStack::GetActive(), "red");
+					if (HDevWindowStack::IsOpen())
+						DispObj(ho_cnt, HDevWindowStack::GetActive());
+					AreaCenterXld(ho_cnt, &hv_Area, &hv_Row, &hv_Column, &hv_po);
+					SetTposition(hv_WindowIDOut, hv_Row, hv_Column);
+					hv_userDefindRegionId = ((const HTuple&)(*hv_regionIdDefinedByUser))[hv_i - 1];
+					if (0 != (hv_userDefindRegionId != -1))
+					{
+						WriteString(hv_WindowIDOut, "ROI-" + hv_userDefindRegionId);
+					}
+					else
+					{
+						WriteString(hv_WindowIDOut, "ROI-" + hv_i);
+					}
+					if (HDevWindowStack::IsOpen())
+						SetLineWidth(HDevWindowStack::GetActive(), 2);
+				}
+				else
+				{
+					if (HDevWindowStack::IsOpen())
+						SetLineWidth(HDevWindowStack::GetActive(), 3);
+					if (HDevWindowStack::IsOpen())
+						SetColor(HDevWindowStack::GetActive(), HTuple(hv_COLORS[hv_i%hv_COLORS_NUMBER]));
+					AreaCenterXld(ho_cnt, &hv_Area, &hv_Row, &hv_Column, &hv_po);
+					SetTposition(hv_WindowIDOut, hv_Row, hv_Column);
+					WriteString(hv_WindowIDOut, "ROI-" + hv_i);
+					if (HDevWindowStack::IsOpen())
+						DispObj(ho_cnt, HDevWindowStack::GetActive());
+				}
+			}
+		}
+		if (0 != ((*hv_selectedRegionIdList) != HTuple()))
+		{
+			SelectObj(ho_GenContours, &ho_selectedContours, (*hv_selectedRegionIdList));
+			if (HDevWindowStack::IsOpen())
+				SetColor(HDevWindowStack::GetActive(), "green");
+			if (HDevWindowStack::IsOpen())
+				SetLineWidth(HDevWindowStack::GetActive(), 4);
+			if (HDevWindowStack::IsOpen())
+				DispObj(ho_selectedContours, HDevWindowStack::GetActive());
+			if (HDevWindowStack::IsOpen())
+				SetLineWidth(HDevWindowStack::GetActive(), 1);
+			if (HDevWindowStack::IsOpen())
+				SetColor(HDevWindowStack::GetActive(), "black");
+		}
+		if (HDevWindowStack::IsOpen())
+			SetLineWidth(HDevWindowStack::GetActive(), 1);
+		if (HDevWindowStack::IsOpen())
+			SetColor(HDevWindowStack::GetActive(), "black");
+		dev_update_off();
+		//stop ()
+		//*********************************************************************
+		//*********************************************************************
+		// Error variable 'hv_Error' activated
+		hv_Error = 2;
+		// dev_set_check ("~give_error")
+		//*********************************************************************
+		//*********************************************************************
+		try
+		{
+			hv_Error = 2;
+			GetMbutton(hv_WindowID, &hv_Row, &hv_Column, &hv_mButton);
+		}
+		catch (HalconCpp::HException e)
+		{
+			hv_Error = (int)e.ErrorCode();
+			if (hv_Error < 0)
+				throw e;
+		}
+		//get_mposition (WindowIDOut, Row, Column, mButton)
+		//*********************************************************************
+		//*********************************************************************
+		// Error variable 'hv_Error' deactivated
+		// dev_set_check ("give_error")
+		if (0 != (hv_Error == 2))
+		{
+		}
+		//*** TODO：一次只添加一个
+		hv_current = 0;
+		{
+			HTuple end_val116 = hv_RegionNumber;
+			HTuple step_val116 = 1;
+			for (hv_i = 1; hv_i.Continue(end_val116, step_val116); hv_i += step_val116)
+			{
+				hv_isInside = 0;
+				SelectObj(ho_GenContours, &ho_contourSelected, hv_i);
+				TestXldPoint(ho_contourSelected, hv_Row, hv_Column, &hv_isInside);
+				if (0 != (hv_isInside == 1))
+				{
+					if (0 != (hv_i>hv_current))
+					{
+						hv_current = hv_i;
+					}
+				}
+			}
+		}
+		if (0 != (hv_mButton != 0))
+		{
+			if (0 != (HTuple(hv_mButton == 1).TupleAnd(hv_current>0)))
+			{
+				hv_repeatFlag = 0;
+				TupleLength((*hv_selectedRegionIdList), &hv_countNumber);
+				if (0 != (hv_countNumber == 0))
+				{
+					(*hv_selectedRegionIdList) = hv_current;
+				}
+				else
+				{
+					{
+						HTuple end_val133 = hv_countNumber - 1;
+						HTuple step_val133 = 1;
+						for (hv_index = 0; hv_index.Continue(end_val133, step_val133); hv_index += step_val133)
+						{
+							if (0 != (HTuple((*hv_selectedRegionIdList)[hv_index]) == hv_current))
+							{
+								hv_repeatFlag = 1;
+							}
+						}
+					}
+					if (0 != (hv_repeatFlag == 0))
+					{
+						(*hv_selectedRegionIdList) = (*hv_selectedRegionIdList).TupleConcat(hv_current);
+					}
+				}
+			}
+			if (0 != (hv_mButton == 4))
+			{
+				if (0 != (hv_current != 0))
+				{
+					TupleLength((*hv_selectedRegionIdList), &hv_cntN);
+					if (0 != (hv_cntN == 0))
+					{
+						(*hv_selectedRegionIdList) = HTuple();
+					}
+					else
+					{
+						{
+							HTuple end_val149 = hv_cntN;
+							HTuple step_val149 = 1;
+							for (hv_index = 1; hv_index.Continue(end_val149, step_val149); hv_index += step_val149)
+							{
+								if (0 != (HTuple((*hv_selectedRegionIdList)[hv_index - 1]) == hv_current))
+								{
+									TupleRemove((*hv_selectedRegionIdList), hv_index - 1, &(*hv_selectedRegionIdList));
+									break;
+								}
+							}
+						}
+					}
+				}
+				else
+				{
+					//finishFlag := true
+				}
+			}
+		}
+		//** dump_window_image(InitWindowImage,WindowIDOut)
+		dev_update_on();
+	}
+	//dev_close_window ()
+	return;
+}
+
+
+
 void MultiRegions::OnBnClickedButton2()
 {
 	// TODO:  在此添加控件通知处理程序代码
 	HTuple hv_DxfStatus, hv_RegionNumber;
-	HTuple hv_ImagePath = "C:\\Users\\AI-009\\Desktop\\新建文件夹\\white.png";
+	HTuple hv_ImagePath = ".\\location\\white.png";
 	ReadImage(&ho_ImageBG, hv_ImagePath);
 	/*ReadContourXldDxf(&ho_Contours, "C:\\Users\\AI-009\\Desktop\\新建文件夹\\result.dxf", HTuple(),
 		HTuple(), &hv_DxfStatus);*/
 	gen_regions_by_contours_bingary_image(ho_ImageBG, ho_Contours, &ho_GenRegions, &ho_GenContours, m_hWidth,
 		m_hHeight, &hv_RegionNumber);
-	get_user_selected_ROIs(hoImage, ho_GenRegions, ho_GenContours, hvWindowID, &hv_contourGroupIdx);
+	get_user_selected_ROIs(hoImage, ho_GenRegions, ho_GenContours, hvWindowID, &hv_regionIdDefinedByUser, &hv_contourGroupIdx, &hv_mousePositionRegionID);
 }
 
 void MultiRegions::OnBnClickedButton3()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	WriteContourXldDxf(ho_ModelTrans, "C:\\Users\\AI-009\\Desktop\\新建文件夹\\result.dxf");
+	WriteContourXldDxf(ho_ModelTrans, ".\\location\\result.dxf");
 }
