@@ -320,12 +320,17 @@ void MultiRegions::DisPlayImage(HObject hImageSrc, HTuple hWindow)
 	double Column1 = nImageWidth*m_dScale - m_nWidthOffset;
 	double Row2 = nImageHeight - nImageHeight*m_dScale - m_nHeightOffset;
 	double Column2 = nImageWidth - nImageWidth*m_dScale - m_nWidthOffset;
-
+	//GenRectangle1(&ho_Rectangle, Row1, Column1, Row2, Column2);
+	//Difference(hImageSrc, ho_Rectangle, &ho_DiffRectangle);
 	//ClearWindow(hWindow);
-	SetPart(hWindow, Row1, Column1, Row2, Column2);
-	HDevWindowStack::Push(hvWindowID);
+	SetColor(hWindow, "white");
+	SetDraw(hWindow, "fill");
+	//OverpaintRegion(hImageSrc, ho_DiffRectangle, 255, "fill");
+	HDevWindowStack::Push(hWindow);
 	if (HDevWindowStack::IsOpen())
 	{
+		DispRectangle1(hWindow, 0, 0, m_hHeight, m_hWidth);
+		SetPart(hWindow, Row1, Column1, Row2, Column2);
 		DispObj(hImageSrc, HDevWindowStack::GetActive());
 	}
 
@@ -503,8 +508,8 @@ void MultiRegions::OnBnClickedButtonLoadimageXld()
 	m_dDispImagePartCol1 = Col1;
 
 	ShowImage();*/
-	ReadContourXldDxf(&ho_Contours, ".\\location\\工程图文档5.dxf", HTuple(),
-		HTuple(), &hv_DxfStatus);
+	/*ReadContourXldDxf(&ho_Contours, ".\\location\\工程图文档5.dxf", HTuple(),
+		HTuple(), &hv_DxfStatus);*/
 	//dxf_scale(&ho_Contours, pixel_size, &ho_ContoursScaled, &x_base, &y_base);
 
 	HDevWindowStack::Push(hvWindowID);
@@ -1431,6 +1436,7 @@ BOOL MultiRegions::PreTranslateMessage(MSG* pMsg)
 	ptTmp.y = ptTmp.y - Rect1.top;
 	pPICWnd = GetDlgItem(IDC_PIC_MULTIREGION);
 	pPICWnd->GetClientRect(&rcPIC);
+	//SetColor(hvWindowID, "white");
 	//判断鼠标是否在图像控件内 
 	if (rcPIC.PtInRect(ptTmp))
 	{
