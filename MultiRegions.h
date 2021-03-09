@@ -47,9 +47,13 @@ public:
 	CListCtrl m_list_detectAllRegion;
 
 	HObject hoImage, hoImageResult; //hoImage原图像对象
+	HObject ho_Rectangle;
+	HObject ho_DiffRectangle;
 	HObject ho_GenRegions;
 	HObject ho_GenContours;
 	HTuple hv_contourGroupIdx;
+	HTuple hv_regionIdDefinedByUser;
+	HTuple hv_mousePositionRegionID;
 	HTuple hvWindowID;                    //显示窗口句柄
 	vector<CString> detectmethods;        //所有区域使用的算法（依次推入该容器）
 	vector<HObject> hv_single_XldList;    //所有新建的xld（依次推入该容器）
